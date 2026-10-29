@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karwa Chauth - Chand Darshan 🌙</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 40%, #2d1b4e 70%, #4a2c5e 100%);
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+  .stars { position: absolute; width: 100%; height: 100%; overflow: hidden; }
+  .star {
+    position: absolute; background: white; border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  .moon-container {
+    position: absolute; left: 50%; bottom: -200px;
+    transform: translateX(-50%);
+    animation: moonRise 8s ease-out forwards; z-index: 10;
+  }
+  @keyframes moonRise {
+    0% { bottom: -200px; opacity: 0; }
+    20% { opacity: 1; }
+    100% { bottom: 50%; opacity: 1; }
+  }
+
+  .moon {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    position: relative;
+    animation: moonGlow 3s infinite ease-in-out;
+    overflow: hidden;
+  }
+
+  /* Real NASA Moon Image */
+  .moon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    filter: brightness(1.15) contrast(1.1);
+  }
+
+  .moon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset -8px -8px 20px rgba(0,0,0,0.4);
+    pointer-events: none;
+  }
+
+  @keyframes moonGlow {
+    0%, 100% { box-shadow: 0 0 40px 10px rgba(255,245,200,0.8), 0 0 80px 30px rgba(255,235,150,0.5), 0 0 120px 60px rgba(255,220,120,0.3); }
+    50% { box-shadow: 0 0 60px 20px rgba(255,245,200,1), 0 0 110px 40px rgba(255,235,150,0.7), 0 0 160px 80px rgba(255,220,120,0.4); }
+  }
+
+  .rays {
+    position: absolute; top: 50%; left: 50%;
+    width: 350px; height: 350px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255,245,200,0.3) 0%, transparent 60%);
+    border-radius: 50%; animation: pulse 4s infinite ease-in-out; pointer-events: none;
+    z-index: -1;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
+  }
+
+  .title {
+    position: absolute; top: 30px; width: 100%; text-align: center;
+    color: #ffe082; font-size: 2em; font-weight: bold;
+    text-shadow: 0 0 20px rgba(255,215,0,0.8); z-index: 20;
+    animation: fadeIn 2s ease-out; padding: 0 20px;
+  }
+  .subtitle {
+    font-size: 0.5em; color: #fff9c4; font-weight: normal;
+    display: block; margin-top: 8px; opacity: 0.85;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .message {
+    position: absolute; bottom: 40px; width: 100%; text-align: center;
+    color: #fff9c4; font-size: 1.2em; z-index: 20; opacity: 0;
+    animation: messageIn 3s 6s forwards; padding: 0 20px;
+    text-shadow: 0 0 10px rgba(255,215,0,0.6);
+  }
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ground {
+    position: absolute; bottom: 0; width: 100%; height: 120px;
+    background: linear-gradient(180deg, transparent, #1a0f2e 40%, #0d0718); z-index: 15;
+  }
+  .diya { position: absolute; bottom: 30px; z-index: 25; animation: flicker 2s infinite ease-in-out; }
+  .diya-left { left: 10%; }
+  .diya-right { right: 10%; }
+  .diya-body {
+    width: 50px; height: 25px;
+    background: linear-gradient(180deg, #b71c1c, #7f0000);
+    border-radius: 0 0 25px 25px; position: relative;
+  }
+  .flame {
+    position: absolute; top: -22px; left: 50%;
+    transform: translateX(-50%); width: 14px; height: 22px;
+    background: radial-gradient(ellipse at bottom, #fff59d, #ffb300 50%, #ff6f00);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.5s infinite alternate;
+    box-shadow: 0 0 20px 8px rgba(255,180,0,0.6);
+  }
+  @keyframes flicker {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.15); opacity: 0.85; }
+  }
+  .particle {
+    position: absolute; width: 4px; height: 4px;
+    background: rgba(255,235,59,0.8); border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(-30px); opacity: 1; }
+  }
+  @media (max-width: 600px) {
+    .moon { width: 130px; height: 130px; }
+    .title { font-size: 1.5em; }
+    .message { font-size: 1em; }
+    .diya-left { left: 5%; }
+    .diya-right { right: 5%; }
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="title">
+    🌙 करवा चौथ 🌙
+    <span class="subtitle">चाँद दर्शन • Chand Darshan</span>
+  </div>
+
+  <div class="moon-container">
+    <div class="moon">
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/600px-FullMoon2010.jpg" 
+        alt="Real Moon" 
+        class="moon-img"
+        onerror="this.style.display='none'; this.parentElement.style.background='radial-gradient(circle at 35% 35%, #fffde7, #fff9c4 40%, #ffe082 70%, #ffca28)';"
+      >
+      <div class="rays"></div>
+    </div>
+  </div>
+
+  <div class="ground"></div>
+  <div class="diya diya-left"><div class="diya-body"><div class="flame"></div></div></div>
+  <div class="diya diya-right"><div class="diya-body"><div class="flame"></div></div></div>
+  <div class="message">✨ चाँद निकल आया है — अब व्रत तोड़ें 🙏 ✨</div>
+
+<script>
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (2 + Math.random() * 3) + 's';
+    starsContainer.appendChild(star);
+  }
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.bottom = Math.random() * 40 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    document.body.appendChild(p);
+  }
+</script>
+</body>
+</html>
