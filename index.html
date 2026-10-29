@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<title>Karwa Chauth – Chand nikal raha hai</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;600&display=swap">
+<style>
+:root{color-scheme:dark;--gold:#f5c35a;--ink:#07030f;--text:#fff3e0}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--text);font-family:'Mukta',system-ui,sans-serif;overflow:hidden}
+#scene{position:relative;height:100%;overflow:hidden;
+  background:linear-gradient(180deg,#0a0420 0%,#1c0b3c 38%,#4a1850 62%,#8c2a52 80%,#d4643a 100%)}
+#dusk{position:absolute;inset:0;background:radial-gradient(120% 55% at 50% 100%,rgba(255,150,60,.75),transparent 70%);transition:opacity .3s}
+#night{position:absolute;inset:0;background:#050212;opacity:0}
+#stars{position:absolute;inset:0;width:100%;height:100%}
+#box{position:absolute;z-index:2;border:0;background:none;padding:0;cursor:pointer;will-change:transform}
+#glow{position:absolute;inset:0;border-radius:50%}
+#moon{position:absolute;inset:0;width:100%;height:100%;border-radius:50%}
+#sieve{position:absolute;inset:-16%;border-radius:50%;opacity:0;transition:opacity .5s;pointer-events:none;
+  background:radial-gradient(circle,rgba(7,3,15,.9) 1.3px,transparent 1.6px) 0 0/8px 8px,radial-gradient(circle,rgba(7,3,15,.9) 1.3px,transparent 1.6px) 4px 4px/8px 8px;
+  border:5px solid #c98a2b;box-shadow:0 0 0 2px #f5c35a inset,0 0 22px rgba(0,0,0,.5)}
+#sieve.on{opacity:1}
+.cloud{position:absolute;z-index:3;height:46px;border-radius:50%;filter:blur(16px);background:rgba(45,15,55,.55);animation:drift linear infinite}
+.c1{width:55%;top:56%;left:-60%;animation-duration:70s}
+.c2{width:42%;top:44%;left:-50%;animation-duration:95s;animation-delay:-30s;opacity:.7}
+@keyframes drift{to{transform:translateX(260vw)}}
+#city{position:absolute;left:0;right:0;bottom:0;height:27%;z-index:4}
+#city svg{width:100%;height:100%;display:block}
+.win{fill:#ffcf6a;filter:drop-shadow(0 0 3px #ffb030)}
+.diya{position:absolute;bottom:calc(3% + env(safe-area-inset-bottom,0px));left:50%;z-index:5;width:44px;height:30px;transform:translateX(-50%)}
+.diya::before{content:"";position:absolute;bottom:0;width:44px;height:16px;border-radius:0 0 44px 44px;background:#b5541f}
+.diya::after{content:"";position:absolute;bottom:14px;left:19px;width:8px;height:20px;border-radius:50% 50% 50% 50%/65% 65% 35% 35%;
+  background:radial-gradient(#fff6c0,#ffb02e 60%,#ff6a00);box-shadow:0 0 24px 10px rgba(255,170,50,.6);transform-origin:50% 100%;animation:flick 1.6s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scale(1,1) rotate(-2deg)}50%{transform:scale(.9,1.12) rotate(2deg)}}
+.copy{position:absolute;left:0;right:0;top:calc(6% + env(safe-area-inset-top,0px));text-align:center;z-index:6;padding:0 20px;pointer-events:none}
+h1{margin:0;font-family:'Tiro Devanagari Hindi',Georgia,serif;font-weight:400;font-size:clamp(30px,8vw,54px);line-height:1.15;color:var(--gold);text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.sub{margin:10px auto 0;max-width:30ch;font-size:clamp(16px,4vw,20px);line-height:1.5;opacity:0;transition:opacity 1.5s}
+.sub.on{opacity:.95}
+#actions{position:absolute;left:0;right:0;bottom:calc(11% + env(safe-area-inset-bottom,0px));z-index:6;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 16px;opacity:0;pointer-events:none;transition:opacity 1s}
+#actions.on{opacity:1;pointer-events:auto}
+.btn{font:600 16px 'Mukta',system-ui,sans-serif;color:#1a0b00;background:var(--gold);border:0;border-radius:999px;padding:12px 20px;min-height:44px;cursor:pointer}
+.btn.alt{background:rgba(7,3,15,.5);color:var(--gold);border:1.5px solid var(--gold)}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#wish{position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(7,3,15,.8);opacity:0;pointer-events:none;transition:opacity .6s}
+#wish.on{opacity:1;pointer-events:auto}
+#wish h2{margin:0 0 10px;font-family:'Tiro Devanagari Hindi',Georgia,serif;font-weight:400;font-size:clamp(28px,7vw,44px);color:var(--gold)}
+#wish p{margin:0 auto 20px;max-width:32ch;font-size:19px;line-height:1.55}
+@media (prefers-reduced-motion:reduce){.cloud,.diya::after{animation:none}}
+</style>
+</head>
+<body>
+<main id="scene">
+  <div id="dusk"></div><div id="night"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="copy"><h1>चाँद निकल रहा है</h1><p class="sub" id="sub">Karwa Chauth ki shaam. Bas thoda ruko, chand dikhne hi wala hai.</p></div>
+  <button id="box" aria-label="Chand. Chhalni se dekhne ke liye dabao">
+    <div id="glow"></div><canvas id="moon" width="440" height="440"></canvas><span id="sieve"></span>
+  </button>
+  <div class="cloud c1"></div><div class="cloud c2"></div>
+  <div id="city" aria-hidden="true">
+    <svg viewBox="0 0 400 100" preserveAspectRatio="xMidYMax slice">
+      <path fill="#2a0f38" d="M0 100V58l30-8 40 6 30-12 50 10 40-4 40 8 50-12 60 10 60-4v46z"/>
+      <path fill="#0a0414" d="M0 100V72h18V60h26V72h14V50h6V42l5-9 5 9v8h6v22h22V64h16V72h20V56h6V48h22V56h6V72h18V62h20V72h24V54l8-12 8 12v18h16V66h30V74h18V58h22V72h20V64h26V100z"/>
+      <path fill="none" stroke="#0a0414" stroke-width="1.2" d="M150 48h22M153 48v-6M160 48v-6M167 48v-6M172 48v-6M296 72h24M299 72v-7M306 72v-7M313 72v-7M320 72v-7"/>
+      <rect x="22" y="64" width="3" height="4" class="win"/><rect x="36" y="64" width="3" height="4" class="win"/>
+      <rect x="77" y="58" width="3" height="4" class="win"/><rect x="127" y="60" width="3" height="4" class="win"/>
+      <rect x="233" y="66" width="3" height="4" class="win"/><rect x="338" y="62" width="3" height="4" class="win"/>
+      <rect x="373" y="68" width="3" height="4" class="win"/>
+    </svg>
+  </div>
+  <div class="diya" aria-hidden="true"></div>
+  <div id="actions">
+    <button class="btn alt" id="sieveBtn">Chhalni se dekho</button>
+    <button class="btn" id="argBtn">Arghya do</button>
+  </div>
+  <div id="wish" role="dialog" aria-modal="true" aria-labelledby="wt"><div>
+    <h2 id="wt">Karwa Chauth ki shubhkamnayein</h2>
+    <p>Chand nikal aaya, vrat poora hua. Ab pani piyo aur mithai khao.</p>
+    <button class="btn" id="closeBtn">Wapas chand dekho</button>
+  </div></div>
+</main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},W,H,sc=$('scene');
+function hash(x,y){var h=Math.sin(x*127.1+y*311.7)*43758.5453;return h-Math.floor(h)}
+function lerp(a,b,t){return a+(b-a)*t}
+function noise(x,y){var xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+  return lerp(lerp(hash(xi,yi),hash(xi+1,yi),u),lerp(hash(xi,yi+1),hash(xi+1,yi+1),u),v)}
+function fbm(x,y){var s=0,a=.5;for(var i=0;i<5;i++){s+=a*noise(x,y);x*=2.03;y*=2.03;a*=.5}return s}
+function sm(a,b,x){x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)}
+
+/* Realistic moon: procedural maria, craters, limb darkening */
+var mc=$('moon'),mx=mc.getContext('2d'),S=mc.width,R=S/2,img=mx.createImageData(S,S),d=img.data;
+for(var j=0;j<S;j++)for(var i=0;i<S;i++){
+  var nx=(i+.5-R)/R,ny=(j+.5-R)/R,r2=nx*nx+ny*ny,k=(j*S+i)*4;
+  if(r2>1){d[k+3]=0;continue}
+  var nz=Math.sqrt(1-r2),edge=Math.min(1,(1-Math.sqrt(r2))*R/1.5);
+  var mare=sm(.5,.64,fbm(nx*1.7+9,ny*1.7+4)+.12*nx-.06*ny);
+  var g=.88-.34*mare+(fbm(nx*9,ny*9)-.5)*.16+(fbm(nx*28,ny*28)-.5)*.05;
+  g*=.5+.5*Math.pow(nz,.45);
+  d[k]=Math.min(255,g*262);d[k+1]=Math.min(255,g*252);d[k+2]=Math.min(255,g*232);d[k+3]=255*edge;
+}
+mx.putImageData(img,0,0);
+mx.save();mx.beginPath();mx.arc(R,R,R-1,0,6.283);mx.clip();
+var seed=7;function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647}
+for(var n=0;n<85;n++){
+  var a=rnd()*6.283,rr=Math.sqrt(rnd())*.93,cx=R+Math.cos(a)*rr*R,cy=R+Math.sin(a)*rr*R,cr=(rnd()<.12?.07:.012+rnd()*.03)*R*(1-rr*.35);
+  var gr=mx.createRadialGradient(cx+cr*.15,cy+cr*.15,cr*.1,cx,cy,cr);
+  gr.addColorStop(0,'rgba(60,55,50,.28)');gr.addColorStop(.8,'rgba(60,55,50,.12)');gr.addColorStop(1,'rgba(255,255,255,0)');
+  mx.fillStyle=gr;mx.beginPath();mx.arc(cx,cy,cr,0,6.283);mx.fill();
+  mx.strokeStyle='rgba(255,252,240,.22)';mx.lineWidth=Math.max(.8,cr*.12);
+  mx.beginPath();mx.arc(cx-cr*.06,cy-cr*.06,cr,3.5,5.6);mx.stroke();
+}
+/* Tycho-style bright ray crater */
+var tx=R*.9,ty=R*1.45;
+for(var q=0;q<26;q++){var ang=rnd()*6.283,len=R*(.25+rnd()*.5);
+  var lg=mx.createLinearGradient(tx,ty,tx+Math.cos(ang)*len,ty+Math.sin(ang)*len);
+  lg.addColorStop(0,'rgba(255,255,250,.35)');lg.addColorStop(1,'rgba(255,255,250,0)');
+  mx.strokeStyle=lg;mx.lineWidth=1.2;mx.beginPath();mx.moveTo(tx,ty);mx.lineTo(tx+Math.cos(ang)*len,ty+Math.sin(ang)*len);mx.stroke()}
+mx.restore();
+
+/* Stars */
+var st=$('stars'),sx=st.getContext('2d'),stars=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,starA=0;
+function size(){var r=sc.getBoundingClientRect(),dp=devicePixelRatio||1;W=r.width;H=r.height;
+  st.width=W*dp;st.height=H*dp;sx.setTransform(dp,0,0,dp,0,0);
+  stars=[];for(var i=0;i<140;i++)stars.push({x:Math.random()*W,y:Math.pow(Math.random(),1.5)*H*.68,r:Math.random()*1.2+.25,p:Math.random()*6.3})}
+function frameStars(t){sx.clearRect(0,0,W,H);
+  for(var i=0;i<stars.length;i++){var s=stars[i];sx.globalAlpha=starA*(.3+.6*Math.abs(Math.sin(t/1300+s.p)))*(1-s.y/(H*.8));
+    sx.fillStyle='#fff6e0';sx.beginPath();sx.arc(s.x,s.y,s.r,0,6.283);sx.fill()}
+  requestAnimationFrame(frameStars)}
+
+/* Moonrise */
+var box=$('box'),glow=$('glow'),dusk=$('dusk'),night=$('night'),DUR=reduce?1:22000,t0=null,D=0,done=false;
+function place(p){
+  var e=1-Math.pow(1-p,2.2);
+  D=Math.min(W*.58,H*.34,300);
+  var horizon=H*.8,cy0=horizon+D*.1,cy1=H*.4,cy=lerp(cy0,cy1,e),s=lerp(1.28,1,e);
+  box.style.width=box.style.height=D+'px';
+  box.style.left=(W/2-D/2)+'px';box.style.top=(cy-D/2)+'px';box.style.transform='scale('+s+')';
+  var k=1-sm(0,.8,p);
+  mc.style.filter='sepia('+k+') saturate('+(1+3.2*k)+') hue-rotate('+(-16*k)+'deg) brightness('+(1.12-.2*k)+') contrast(1.05)';
+  glow.style.boxShadow='0 0 '+D*.35+'px '+D*.1+'px rgba(255,'+(150+90*(1-k)|0)+','+(70+130*(1-k)|0)+','+(.28+.12*(1-k))+')';
+  dusk.style.opacity=1-.5*e;night.style.opacity=.3*e;starA=sm(.15,.9,p);
+}
+function tick(ts){
+  if(t0===null)t0=ts;var p=Math.min(1,(ts-t0)/DUR);place(p);
+  if(p>.88&&!done){done=true;$('sub').classList.add('on');$('actions').classList.add('on')}
+  if(p<1)requestAnimationFrame(tick)}
+size();addEventListener('resize',function(){size();place(done?1:0)});
+place(0);requestAnimationFrame(frameStars);requestAnimationFrame(tick);
+
+var sv=$('sieve'),wish=$('wish');
+function tog(){sv.classList.toggle('on')}
+box.addEventListener('click',tog);$('sieveBtn').addEventListener('click',tog);
+$('argBtn').addEventListener('click',function(){wish.classList.add('on');$('closeBtn').focus()});
+$('closeBtn').addEventListener('click',function(){wish.classList.remove('on')});
+})();
+</script>
+</body>
+</html>
