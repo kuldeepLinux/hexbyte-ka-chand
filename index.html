@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karwa Chauth - Chand Darshan 🌙</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    min-height: 100vh;
+    /* Ekdum perfect Night Sky Gradient */
+    background: linear-gradient(180deg, #020111 0%, #08112c 40%, #132347 70%, #1e3b6d 100%);
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+  }
+
+  /* Aakash mein Taare (Stars) */
+  .stars {
+    position: absolute; inset: 0; z-index: 1;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 200px 50px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 250px 160px, #fff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 300px 200px;
+    animation: twinkle 4s infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  /* Baadal (Clouds) */
+  .clouds {
+    position: absolute; bottom: 0; width: 100%; height: 300px;
+    background: radial-gradient(ellipse at bottom, rgba(30, 60, 110, 0.6) 0%, transparent 70%);
+    z-index: 2;
+  }
+
+  /* Chand Nikalne ka Animation */
+  .moon-container {
+    position: absolute; left: 50%; bottom: -200px;
+    transform: translateX(-50%);
+    animation: moonRise 8s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+    z-index: 10;
+  }
+  
+  @keyframes moonRise {
+    0% { bottom: -200px; opacity: 0; }
+    20% { opacity: 1; }
+    100% { bottom: 50%; opacity: 1; }
+  }
+
+  /* Real looking Moon without any square box */
+  .moon {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    position: relative;
+    /* Chand ka texture aur 3D effect */
+    background: 
+      radial-gradient(circle at 30% 30%, #ffffff 0%, #e0e0e0 30%, #a0a0a0 70%, #505050 100%),
+      url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/600px-FullMoon2010.jpg') center/cover;
+    background-blend-mode: multiply;
+    box-shadow: 
+      inset -15px -15px 30px rgba(0,0,0,0.6), /* 3D Shadow */
+      0 0 40px 10px rgba(255, 255, 255, 0.7), /* Inner Glow */
+      0 0 100px 40px rgba(150, 200, 255, 0.4), /* Outer Glow */
+      0 0 180px 80px rgba(100, 150, 255, 0.2); /* Deep Glow */
+    animation: moonGlow 4s infinite alternate;
+  }
+
+  @keyframes moonGlow {
+    0% { 
+      box-shadow: inset -15px -15px 30px rgba(0,0,0,0.6), 0 0 40px 10px rgba(255,255,255,0.7), 0 0 100px 40px rgba(150,200,255,0.4), 0 0 180px 80px rgba(100,150,255,0.2); 
+    }
+    100% { 
+      box-shadow: inset -15px -15px 30px rgba(0,0,0,0.6), 0 0 60px 20px rgba(255,255,255,0.9), 0 0 130px 60px rgba(150,200,255,0.6), 0 0 220px 100px rgba(100,150,255,0.3); 
+    }
+  }
+
+  /* Text Styling */
+  .title {
+    position: absolute; top: 40px; width: 100%; text-align: center;
+    color: #ffffff; font-size: 2.2em; font-weight: bold;
+    text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 10px rgba(0,0,0,0.5); 
+    z-index: 20;
+    animation: fadeIn 2s ease-out;
+  }
+  .subtitle {
+    font-size: 0.45em; color: #b0c4de; font-weight: normal;
+    display: block; margin-top: 8px; letter-spacing: 2px;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .message {
+    position: absolute; bottom: 50px; width: 100%; text-align: center;
+    color: #fff59d; font-size: 1.2em; z-index: 20; opacity: 0;
+    animation: messageIn 3s 7s forwards; padding: 0 20px;
+    text-shadow: 0 0 15px rgba(255,215,0,0.8);
+    font-weight: bold;
+  }
+  
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Diya */
+  .diya { position: absolute; bottom: 40px; z-index: 25; animation: flicker 2s infinite ease-in-out; }
+  .diya-left { left: 15%; }
+  .diya-right { right: 15%; }
+  .diya-body {
+    width: 60px; height: 30px;
+    background: linear-gradient(180deg, #d32f2f, #7f0000);
+    border-radius: 0 0 30px 30px; position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+  }
+  .flame {
+    position: absolute; top: -25px; left: 50%;
+    transform: translateX(-50%); width: 16px; height: 26px;
+    background: radial-gradient(ellipse at bottom, #fff59d, #ffb300 50%, #ff6f00);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.4s infinite alternate;
+    box-shadow: 0 0 25px 10px rgba(255,180,0,0.7);
+  }
+  
+  @keyframes flicker {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
+  }
+
+  @media (max-width: 600px) {
+    .moon { width: 130px; height: 130px; }
+    .title { font-size: 1.8em; }
+    .message { font-size: 1em; }
+    .diya-left { left: 10%; }
+    .diya-right { right: 10%; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Aakash ke Taare -->
+  <div class="stars"></div>
+  <div class="clouds"></div>
+
+  <!-- Title -->
+  <div class="title">
+    🌙 करवा चौथ 🌙
+    <span class="subtitle">चाँद दर्शन • CHAND DARSHAN</span>
+  </div>
+
+  <!-- Chand -->
+  <div class="moon-container">
+    <div class="moon"></div>
+  </div>
+
+  <!-- Diyas -->
+  <div class="diya diya-left"><div class="diya-body"><div class="flame"></div></div></div>
+  <div class="diya diya-right"><div class="diya-body"><div class="flame"></div></div></div>
+
+  <!-- Message -->
+  <div class="message">
+    ✨ चाँद निकल आया है — अब व्रत तोड़ें 🙏 ✨
+  </div>
+
+</body>
+</html>
